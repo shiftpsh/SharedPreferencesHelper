@@ -177,11 +177,35 @@ public class SharedPreferencesHelper {
     }
 
     /**
+     * Assign a boolean array to a specified key.
+     */
+    public void putBooleanArray(String key, boolean[] value) {
+        SharedPreferences.Editor e = s.edit();
+        e.putInt(key + ".arrayLength", value.length);
+        e.putString(key + ".arrayType", "Boolean");
+
+        for (int i = 0; i < value.length; i++) e.putBoolean(key + '[' + i + ']', value[i]);
+        e.commit();
+    }
+
+    /**
      * Assign a integer value to a specified key.
      */
     public void putInt(String key, int value) {
         SharedPreferences.Editor e = s.edit();
         e.putInt(key, value);
+        e.commit();
+    }
+
+    /**
+     * Assign a integer array to a specified key.
+     */
+    public void putIntArray(String key, int[] value) {
+        SharedPreferences.Editor e = s.edit();
+        e.putInt(key + ".arrayLength", value.length);
+        e.putString(key + ".arrayType", "Integer");
+
+        for (int i = 0; i < value.length; i++) e.putInt(key + '[' + i + ']', value[i]);
         e.commit();
     }
 
@@ -195,6 +219,18 @@ public class SharedPreferencesHelper {
     }
 
     /**
+     * Assign a floating point array to a specified key.
+     */
+    public void putFloatArray(String key, float[] value) {
+        SharedPreferences.Editor e = s.edit();
+        e.putInt(key + ".arrayLength", value.length);
+        e.putString(key + ".arrayType", "Float");
+
+        for (int i = 0; i < value.length; i++) e.putFloat(key + '[' + i + ']', value[i]);
+        e.commit();
+    }
+
+    /**
      * Assign a long value to a specified key.
      */
     public void putLong(String key, long value) {
@@ -204,11 +240,35 @@ public class SharedPreferencesHelper {
     }
 
     /**
-     * Assign a string point value to a specified key.
+     * Assign a long array to a specified key.
+     */
+    public void putLongArray(String key, long[] value) {
+        SharedPreferences.Editor e = s.edit();
+        e.putInt(key + ".arrayLength", value.length);
+        e.putString(key + ".arrayType", "Long");
+
+        for (int i = 0; i < value.length; i++) e.putLong(key + '[' + i + ']', value[i]);
+        e.commit();
+    }
+
+    /**
+     * Assign a string value to a specified key.
      */
     public void putString(String key, String value) {
         SharedPreferences.Editor e = s.edit();
         e.putString(key, value);
+        e.commit();
+    }
+
+    /**
+     * Assign a long array to a specified key.
+     */
+    public void putStringArray(String key, String[] value) {
+        SharedPreferences.Editor e = s.edit();
+        e.putInt(key + ".arrayLength", value.length);
+        e.putString(key + ".arrayType", "String");
+
+        for (int i = 0; i < value.length; i++) e.putString(key + '[' + i + ']', value[i]);
         e.commit();
     }
 
@@ -290,6 +350,41 @@ public class SharedPreferencesHelper {
     }
 
     /**
+     * Get a boolean array assigned to a specified key.
+     *
+     * @throws NullPointerException if no array assigned
+     */
+    public boolean[] getBooleanArray(String key) throws NullPointerException {
+        int length = s.getInt(key + ".arrayLength", -1);
+        if (length == -1) throw new NullPointerException();
+        if (! s.getString(key + ".arrayType", "").equals("Boolean")) throw new NullPointerException();
+
+        boolean[] value = new boolean[length];
+        for (int i = 0; i < length; i++) {
+            value[i] = s.getBoolean(key + '[' + i + ']', false);
+        }
+        return value;
+    }
+
+    /**
+     * Get a boolean array assigned to a specified key.
+     *
+     * @param defaultValue Default value
+     * @return Default value if no value assigned
+     */
+    public boolean[] getBooleanArray(String key, boolean[] defaultValue) {
+        int length = s.getInt(key + ".arrayLength", -1);
+        if (length == -1) return defaultValue;
+        if (! s.getString(key + ".arrayType", "").equals("Boolean")) return defaultValue;
+
+        boolean[] value = new boolean[length];
+        for (int i = 0; i < length; i++) {
+            value[i] = s.getBoolean(key + '[' + i + ']', false);
+        }
+        return value;
+    }
+
+    /**
      * Get a integer value assigned to a specified key. If no value assigned, return 0.
      *
      * @return 0 if no value assigned
@@ -306,6 +401,41 @@ public class SharedPreferencesHelper {
      */
     public int getInt(String key, int defaultValue) {
         return s.getInt(key, defaultValue);
+    }
+
+    /**
+     * Get a integer array assigned to a specified key.
+     *
+     * @throws NullPointerException if no array assigned
+     */
+    public int[] getIntArray(String key) throws NullPointerException {
+        int length = s.getInt(key + ".arrayLength", -1);
+        if (length == -1) throw new NullPointerException();
+        if (! s.getString(key + ".arrayType", "").equals("Integer")) throw new NullPointerException();
+
+        int[] value = new int[length];
+        for (int i = 0; i < length; i++) {
+            value[i] = s.getInt(key + '[' + i + ']', 0);
+        }
+        return value;
+    }
+
+    /**
+     * Get a integer array assigned to a specified key.
+     *
+     * @param defaultValue Default value
+     * @return Default value if no value assigned
+     */
+    public int[] getIntArray(String key, int[] defaultValue) {
+        int length = s.getInt(key + ".arrayLength", -1);
+        if (length == -1) return defaultValue;
+        if (! s.getString(key + ".arrayType", "").equals("Integer")) return defaultValue;
+
+        int[] value = new int[length];
+        for (int i = 0; i < length; i++) {
+            value[i] = s.getInt(key + '[' + i + ']', 0);
+        }
+        return value;
     }
 
     /**
@@ -328,6 +458,41 @@ public class SharedPreferencesHelper {
     }
 
     /**
+     * Get a floating point array assigned to a specified key.
+     *
+     * @throws NullPointerException if no array assigned
+     */
+    public float[] getFloatArray(String key) throws NullPointerException {
+        int length = s.getInt(key + ".arrayLength", -1);
+        if (length == -1) throw new NullPointerException();
+        if (! s.getString(key + ".arrayType", "").equals("Float")) throw new NullPointerException();
+
+        float[] value = new float[length];
+        for (int i = 0; i < length; i++) {
+            value[i] = s.getFloat(key + '[' + i + ']', 0);
+        }
+        return value;
+    }
+
+    /**
+     * Get a floating point array assigned to a specified key.
+     *
+     * @param defaultValue Default value
+     * @return Default value if no value assigned
+     */
+    public float[] getFloatArray(String key, float[] defaultValue) {
+        int length = s.getInt(key + ".arrayLength", -1);
+        if (length == -1) return defaultValue;
+        if (! s.getString(key + ".arrayType", "").equals("Float")) return defaultValue;
+
+        float[] value = new float[length];
+        for (int i = 0; i < length; i++) {
+            value[i] = s.getFloat(key + '[' + i + ']', 0);
+        }
+        return value;
+    }
+
+    /**
      * Get a long value assigned to a specified key. If no value assigned, return 0.
      *
      * @return 0 if no value assigned
@@ -347,6 +512,41 @@ public class SharedPreferencesHelper {
     }
 
     /**
+     * Get a long array assigned to a specified key.
+     *
+     * @throws NullPointerException if no array assigned
+     */
+    public long[] getLongArray(String key) throws NullPointerException {
+        int length = s.getInt(key + ".arrayLength", -1);
+        if (length == -1) throw new NullPointerException();
+        if (! s.getString(key + ".arrayType", "").equals("Long")) throw new NullPointerException();
+
+        long[] value = new long[length];
+        for (int i = 0; i < length; i++) {
+            value[i] = s.getLong(key + '[' + i + ']', 0);
+        }
+        return value;
+    }
+
+    /**
+     * Get a long array assigned to a specified key.
+     *
+     * @param defaultValue Default value
+     * @return Default value if no value assigned
+     */
+    public long[] getLongArray(String key, long[] defaultValue) {
+        int length = s.getInt(key + ".arrayLength", -1);
+        if (length == -1) return defaultValue;
+        if (! s.getString(key + ".arrayType", "").equals("Long")) return defaultValue;
+
+        long[] value = new long[length];
+        for (int i = 0; i < length; i++) {
+            value[i] = s.getLong(key + '[' + i + ']', 0);
+        }
+        return value;
+    }
+
+    /**
      * Get a string value assigned to a specified key. If no value assigned, return null.
      *
      * @return null if no value assigned
@@ -363,6 +563,41 @@ public class SharedPreferencesHelper {
      */
     public String getString(String key, String defaultValue) {
         return s.getString(key, defaultValue);
+    }
+
+    /**
+     * Get a string array assigned to a specified key.
+     *
+     * @throws NullPointerException if no array assigned
+     */
+    public String[] getStringArray(String key) throws NullPointerException {
+        int length = s.getInt(key + ".arrayLength", -1);
+        if (length == -1) throw new NullPointerException();
+        if (! s.getString(key + ".arrayType", "").equals("String")) throw new NullPointerException();
+
+        String[] value = new String[length];
+        for (int i = 0; i < length; i++) {
+            value[i] = s.getString(key + '[' + i + ']', null);
+        }
+        return value;
+    }
+
+    /**
+     * Get a string array assigned to a specified key.
+     *
+     * @param defaultValue Default value
+     * @return Default value if no value assigned
+     */
+    public String[] getStringArray(String key, String[] defaultValue) {
+        int length = s.getInt(key + ".arrayLength", -1);
+        if (length == -1) return defaultValue;
+        if (! s.getString(key + ".arrayType", "").equals("String")) return defaultValue;
+
+        String[] value = new String[length];
+        for (int i = 0; i < length; i++) {
+            value[i] = s.getString(key + '[' + i + ']', null);
+        }
+        return value;
     }
 
     /**
